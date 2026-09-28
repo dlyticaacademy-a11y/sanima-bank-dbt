@@ -1,31 +1,33 @@
-{{ config  (
-    materialized = 'table'
-)
-}}
+{{config(
+     materialized = 'table'
+ ) }}
 
 WITH src AS(
     SELECT * FROM
     {{ source (
         'crmuser',
-        'branch'
-    )
-    }}
+         'customer'
+    ) }}
 ),
 
 FINAL AS (
-    SELECT 
-    branch_sol_id,
-    branch_open_date ,
-    city_code ,
-    address1 ,
-    address2 ,
-    branch_code ,
-    branch_description ,
-    state_code,
-    lchg_user_id,
-    lchg_time
-
-    FROM src
+    SELECT
+    cust_id,
+    name,
+    address,
+    phone_number,
+    postal_code,
+    country,
+    email,
+    father_name,
+    mother_name,
+    occupation,
+    education,
+    nationality,
+    CURRENT_TIMESTAMP  AS created_date
+    
+    FROM
+        src
 )
 
 SELECT * FROM FINAL

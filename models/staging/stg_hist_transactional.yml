@@ -1,0 +1,99 @@
+version: 2
+
+models:
+  - name: stg_hist_transactional
+    description: >
+      Staged view of the `hist_transactional` source table. One row per
+      posted transaction. Loaded incrementally (append-only) using
+      `tran_date` as the watermark, so only transactions dated after the
+      staged table's current max `tran_date` are re-processed.
+      `tran_amount` is always non-negative; the debit/credit direction is
+      conveyed by `tran_particular`, not by the sign of the amount.
+    columns:
+      - name: tran_id
+        description: "Primary key. Unique transaction identifier, e.g. TXN0000001."
+        tests:
+          - unique
+          - not_null
+
+      - name: account_id
+        description: "Foreign key to `stg_account.account_id`. Account the transaction was posted against."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_account')
+                field: account_id
+
+      - name: branch_id
+        description: "Foreign key to `stg_branch.branch_id`. Branch where the transaction was posted."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_branch')
+                field: branch_id
+
+      - name: tran_amount
+        description: "Transaction amount. Always >= 0; direction is conveyed by `tran_particular`."
+        tests:
+          - not_null
+
+      - name: tran_crncy
+        description: "Currency of the transaction. Matches the referenced account's `acct_crncy_code`."
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['NPR', 'USD', 'AUD', 'EUR', 'GBP', 'INR', 'SGD', 'AED', 'JPY', 'CAD']
+
+      - name: tran_date
+        description: >
+          Date the transaction occurred/was posted. Drives the
+          incremental append: only rows with `tran_date` newer than this
+          staged table's current max `tran_date` are re-processed.
+        tests:
+          - not_null
+
+      - name: tran_particular
+        description: >
+          Transaction type/narration, e.g. Cash Deposit, Cash
+          Withdrawal, ATM Withdrawal, Cheque Deposit, Cheque Withdrawal,
+          Fund Transfer - Inward/Outward, Mobile Banking Transfer,
+          Standing Instruction Debit, Loan EMI Payment, Loan
+          Disbursement, Interest Credit, Salary Credit, Remittance
+          Credit, Service Charge Debit, Utility Bill Payment,
+          POS Purchase.
+        tests:
+          - accepted_values:
+              arguments:
+                values:
+                - 'Cash Deposit'
+                - 'Cash Withdrawal'
+                - 'ATM Withdrawal'
+                - 'Cheque Deposit'
+                - 'Cheque Withdrawal'
+                - 'Fund Transfer - Inward'
+                - 'Fund Transfer - Outward'
+                - 'Mobile Banking Transfer'
+                - 'Standing Instruction Debit'
+                - 'Loan EMI Payment'
+                - 'Loan Disbursement'
+                - 'Interest Credit'
+                - 'Salary Credit'
+                - 'Remittance Credit'
+                - 'Service Charge Debit'
+                - 'Utility Bill Payment'
+                - 'POS Purchase'
+
+      - name: tran_remarks
+        description: "Free-text remarks describing the transaction."
+
+      - name: created_date
+        description: "Timestamp the transaction record was created."
+        tests:
+          - not_null
+
+      - name: modified_date
+        description: "Timestamp the transaction record was last modified."
+        tests:
+          - not_null

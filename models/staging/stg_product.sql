@@ -6,17 +6,16 @@ WITH src AS (
     SELECT * FROM
     {{ source(
         'crmuser',
-        'branch'
+        'product'
     ) }}
 ),
 
 FINAL AS (
     SELECT
-        branch_id,
-        province,
-        cluster_name,
-        city_name,
-        branch_name,
+        product_id,
+        schm_type,
+        schm_code,
+        product_desc,
         CURRENT_TIMESTAMP AS created_date
 
     FROM

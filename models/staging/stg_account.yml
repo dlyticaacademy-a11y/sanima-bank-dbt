@@ -1,0 +1,102 @@
+version: 2
+
+models:
+  - name: stg_account
+    description: >
+      Staged view of the `account` source table — the hub/central table
+      of the bank data model. One row per customer account. Loaded
+      incrementally (merge on `account_id`) using `lchg_time` as the
+      watermark, so only accounts changed since the last run are
+      re-processed. `schm_type`/`schm_code` are denormalized from
+      `product` onto the account itself, so account classification does
+      not require a join to `stg_product`.
+    columns:
+      - name: account_id
+        description: "Primary key. Unique account identifier, e.g. AC000001."
+        tests:
+          - unique
+          - not_null
+
+      - name: customer_id
+        description: "Foreign key to `stg_customer.cust_id`. Owner of the account."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_customer')
+                field: cust_id
+
+      - name: branch_id
+        description: "Foreign key to `stg_branch.branch_id`. Branch where the account is held."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_branch')
+                field: branch_id
+
+      - name: account_balance
+        description: >
+          Current account balance in `acct_crncy_code`. Negative for LD
+          (loan) accounts, representing the outstanding amount owed by
+          the customer; non-negative for every other scheme type
+          (deposit products: SA, CA, FD, RD).
+
+      - name: lien_amt
+        description: "Amount held as lien (earmarked/unavailable) against the account. Always >= 0."
+
+      - name: acct_cls_flg
+        description: "Account closure flag: 'Y' = closed, 'N' = active/open."
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["N", "Y"]
+
+      - name: product_id
+        description: "Foreign key to `stg_product.product_id`."
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg_product')
+                field: product_id
+
+      - name: schm_type
+        description: >
+          Denormalized scheme type from `product.schm_type`:
+          SA = Savings, CA = Current, FD = Fixed Deposit,
+          RD = Recurring Deposit, LD = Loan. Drives the CASA and
+          Loan-to-Deposit KPI calculations in the marts layer.
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["SA", "CA", "FD", "RD", "LD"]
+
+      - name: schm_code
+        description: "Denormalized scheme code from `product.schm_code`."
+
+      - name: acct_crncy_code
+        description: "ISO-style currency code of the account balance."
+        tests:
+          - accepted_values:
+              arguments:
+                values:
+                  [
+                    "NPR",
+                    "USD",
+                    "AUD",
+                    "EUR",
+                    "GBP",
+                    "INR",
+                    "SGD",
+                    "AED",
+                    "JPY",
+                    "CAD",
+                  ]
+
+      - name: lchg_time
+        description: >
+          Last-changed timestamp. Drives the incremental merge: only
+          rows with `lchg_time` newer than this staged table's current
+          max `lchg_time` are re-processed.
+        tests:
+          - not_null

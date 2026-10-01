@@ -6,17 +6,18 @@ WITH src AS (
     SELECT * FROM
     {{ source(
         'crmuser',
-        'branch'
+        'card'
     ) }}
 ),
 
 FINAL AS (
     SELECT
-        branch_id,
-        province,
-        cluster_name,
-        city_name,
-        branch_name,
+        card_number,
+        account_id,
+        balance,
+        card_type,
+        closing_balance,
+        card_expiry_date,
         CURRENT_TIMESTAMP AS created_date
 
     FROM

@@ -2,18 +2,165 @@ version: 2
 
 sources:
   - name: crmuser
-    description: "customer related information"
-    schema: bronze
+    description: >
+      Raw banking data loaded from the core banking system (see
+      `SQL FILES/insert.sql` for DDL). Contains customer, branch, product,
+      account, card and transaction history tables for Sanima Bank.
+    schema: public
     tables:
-      - name: account
-        description: "It contains account related information"
       - name: customer
-        description: "It contains customer information"
+        description: >
+          One row per bank customer (KYC / demographic master data).
+          Referenced by `account.customer_id`.
+        columns:
+          - name: cust_id
+            description: "Primary key. Unique customer identifier, e.g. C0001."
+          - name: name
+            description: "Customer's full legal name."
+          - name: address
+            description: "Free-text mailing address (house no.-block, city)."
+          - name: phone_number
+            description: "Customer's contact phone number."
+          - name: postal_code
+            description: "Postal / ZIP code of the customer's address."
+          - name: country
+            description: "Customer's country of residence."
+          - name: email
+            description: "Customer's email address. Unique per customer."
+          - name: father_name
+            description: "Customer's father's name (KYC requirement)."
+          - name: mother_name
+            description: "Customer's mother's name (KYC requirement)."
+          - name: occupation
+            description: "Customer's stated occupation, e.g. Teacher, Banker, Farmer."
+          - name: education
+            description: "Highest education level, e.g. SLC, +2, Bachelor's, Master's, PhD."
+          - name: nationality
+            description: "Customer's nationality."
+
       - name: branch
-        description: "It contains location of bank"
-      - name: transactions
-        description: "It contains transaction related information"
-      - name: lien
-        description: "It contains loan information"
-      - name: ratelist
-        description: "It contains currency rate information"
+        description: >
+          One row per physical bank branch. Referenced by
+          `account.branch_id` and `hist_transactional.branch_id`.
+        columns:
+          - name: branch_id
+            description: "Primary key. Unique branch identifier, e.g. BR001."
+          - name: province
+            description: "Province in which the branch is located."
+          - name: cluster_name
+            description: "Regional operating cluster the branch belongs to."
+          - name: city_name
+            description: "City in which the branch is located."
+          - name: branch_name
+            description: "Human-readable branch name."
+
+      - name: product
+        description: >
+          One row per banking product/scheme offered by the bank. The
+          combination of `schm_type` and `schm_code` defines the exact
+          product; `schm_type` groups products into CASA/FD/RD/Loan
+          categories (SA = Savings, CA = Current, FD = Fixed Deposit,
+          RD = Recurring Deposit, LD = Loan). Referenced by
+          `account.product_id`.
+        columns:
+          - name: product_id
+            description: "Primary key. Unique product identifier, e.g. PRD001."
+          - name: schm_type
+            description: >
+              Scheme type / product category code:
+              SA = Savings Account, CA = Current Account, FD = Fixed
+              Deposit, RD = Recurring Deposit, LD = Loan.
+          - name: schm_code
+            description: "Scheme code identifying the specific product variant, e.g. SAV001."
+          - name: product_desc
+            description: "Human-readable product name/description."
+
+      - name: account
+        description: >
+          Hub / fact-like table: one row per customer account. Carries the
+          denormalized `schm_type`/`schm_code` (which also exist on
+          `product`) so account classification does not require a join.
+          Loan (LD) accounts carry a negative `account_balance`
+          representing the amount owed; every other scheme type must be
+          non-negative.
+        columns:
+          - name: account_id
+            description: "Primary key. Unique account identifier, e.g. AC000001."
+          - name: customer_id
+            description: "Foreign key to `customer.cust_id`. Owner of the account."
+          - name: branch_id
+            description: "Foreign key to `branch.branch_id`. Branch where the account is held."
+          - name: account_balance
+            description: >
+              Current account balance in `acct_crncy_code`. Negative for
+              LD (loan) accounts, representing the outstanding amount
+              owed by the customer; non-negative for all other scheme
+              types (deposit products).
+          - name: lien_amt
+            description: "Amount held as lien (earmarked/unavailable) against the account. Always >= 0."
+          - name: acct_cls_flg
+            description: "Account closure flag: 'Y' = closed, 'N' = active/open."
+          - name: product_id
+            description: "Foreign key to `product.product_id`."
+          - name: schm_type
+            description: >
+              Denormalized scheme type from `product.schm_type`:
+              SA = Savings, CA = Current, FD = Fixed Deposit,
+              RD = Recurring Deposit, LD = Loan.
+          - name: schm_code
+            description: "Denormalized scheme code from `product.schm_code`."
+          - name: acct_crncy_code
+            description: "ISO-style currency code of the account balance, e.g. NPR, USD, EUR."
+          - name: lchg_time
+            description: >
+              Last-changed timestamp. Drives the incremental merge in
+              `stg_account`: only rows newer than the staged table's
+              current max `lchg_time` are re-processed.
+
+      - name: card
+        description: >
+          One row per debit/credit card issued against an account. An
+          account may have zero, one, or multiple cards.
+        columns:
+          - name: card_number
+            description: "Primary key. Masked/formatted card number."
+          - name: account_id
+            description: "Foreign key to `account.account_id`. Account the card is linked to."
+          - name: balance
+            description: "Current available balance / credit exposure on the card."
+          - name: card_type
+            description: "Type of card: DEBIT or CREDIT."
+          - name: closing_balance
+            description: "Last statement closing balance. Populated for CREDIT cards only; NULL for DEBIT cards."
+          - name: card_expiry_date
+            description: "Date the card expires."
+
+      - name: hist_transactional
+        description: >
+          Historical transaction log for accounts. `tran_amount` is
+          always non-negative; the direction (debit/credit) is conveyed
+          by `tran_particular`, not by the sign of the amount.
+        columns:
+          - name: tran_id
+            description: "Primary key. Unique transaction identifier, e.g. TXN0000001."
+          - name: account_id
+            description: "Foreign key to `account.account_id`. Account the transaction was posted against."
+          - name: branch_id
+            description: "Foreign key to `branch.branch_id`. Branch where the transaction was posted."
+          - name: tran_amount
+            description: "Transaction amount. Always >= 0; direction is conveyed by `tran_particular`."
+          - name: tran_crncy
+            description: "Currency of the transaction. Matches the referenced account's `acct_crncy_code`."
+          - name: tran_date
+            description: "Date the transaction occurred/was posted."
+          - name: tran_particular
+            description: >
+              Transaction type/narration, e.g. Cash Deposit, Cash
+              Withdrawal, Fund Transfer - Inward/Outward, Loan EMI
+              Payment, Interest Credit, Salary Credit.
+          - name: tran_remarks
+            description: "Free-text remarks describing the transaction."
+          - name: created_date
+            description: "Timestamp the transaction record was created."
+          - name: modified_date
+            description: "Timestamp the transaction record was last modified."

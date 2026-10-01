@@ -1,0 +1,167 @@
+currency_code,currency_name,usd_rate,npr_rate
+8,Albanian Lek,0.0107,1.5
+12,Algerian Dinar,0.0075,1.04
+32,Argentine Peso,0.00099,0.14
+36,Australian Dollar,0.641,89.74
+44,Bahamian Dollar,1,140
+48,Bahraini Dinar,2.65,371
+50,Bangladeshi Taka,0.0084,1.17
+51,Armenian Dram,0.0026,0.36
+52,Barbadian Dollar,0.5,70
+60,Bermudian Dollar,1,140
+64,Bhutanese Ngultrum,0.012,1.68
+68,Bolivian Boliviano,0.145,20.29
+72,Botswana Pula,0.074,10.29
+84,Belize Dollar,0.5,70
+96,Brunei Dollar,0.741,103.74
+104,Myanmar Kyat,0.00048,0.067
+108,Burundian Franc,0.00034,0.048
+116,Cambodian Riel,0.00025,0.035
+124,Canadian Dollar,0.699,97.86
+132,Cape Verdean Escudo,0.0098,1.37
+136,Cayman Islands Dollar,1.2,168.67
+144,Sri Lankan Rupee,0.0034,0.47
+152,Chilean Peso,0.00103,0.14
+156,Chinese Yuan,0.138,19.31
+170,Colombian Peso,0.00023,0.032
+174,Comorian Franc,0.0022,0.31
+188,Costa Rican Colón,0.00192,0.27
+191,Croatian Kuna,0.143,20
+192,Cuban Peso,0.042,5.83
+203,Czech Koruna,0.043,5.96
+208,Danish Krone,0.141,19.72
+214,Dominican Peso,0.017,2.31
+222,Salvadoran Colón,0.114,16
+230,Ethiopian Birr,0.0079,1.11
+232,Eritrean Nakfa,0.067,9.33
+238,Falkland Islands Pound,1.27,177.22
+242,Fijian Dollar,0.442,61.95
+262,Djiboutian Franc,0.0056,0.79
+270,Gambian Dalasi,0.014,1.97
+292,Gibraltar Pound,1.27,177.22
+320,Guatemalan Quetzal,0.129,18.06
+324,Guinean Franc,0.00012,0.016
+328,Guyana Dollar,0.0048,0.67
+332,Haitian Gourde,0.0076,1.06
+340,Honduran Lempira,0.04,5.67
+344,Hong Kong Dollar,0.129,17.99
+348,Hungarian Forint,0.0027,0.38
+352,Icelandic Króna,0.0072,1.01
+356,Indian Rupee,0.012,1.68
+360,Indonesian Rupiah,6.30E-05,0.0089
+364,Iranian Rial,2.40E-05,0.0033
+368,Iraqi Dinar,0.00076,0.11
+376,Israeli New Shekel,0.27,37.84
+388,Jamaican Dollar,0.0065,0.9
+392,Japanese Yen,0.0067,0.93
+398,Kazakhstani Tenge,0.0021,0.29
+400,Jordanian Dinar,1.41,197.18
+404,Kenyan Shilling,0.0078,1.09
+408,North Korean Won,0.0011,0.16
+410,South Korean Won,0.00072,0.1
+414,Kuwaiti Dinar,3.26,456.45
+417,Kyrgyzstani Som,0.011,1.61
+418,Lao Kip,4.50E-05,0.0064
+422,Lebanese Pound,1.10E-05,0.0016
+426,Lesotho Loti,0.055,7.73
+430,Liberian Dollar,0.0051,0.72
+434,Libyan Dinar,0.206,28.87
+446,Macanese Pataca,0.125,17.44
+454,Malawian Kwacha,0.00058,0.081
+458,Malaysian Ringgit,0.223,31.25
+462,Maldivian Rufiyaa,0.065,9.09
+480,Mauritian Rupee,0.022,3.03
+484,Mexican Peso,0.049,6.9
+496,Mongolian Tögrög,0.00029,0.041
+498,Moldovan Leu,0.056,7.78
+504,Moroccan Dirham,0.099,13.86
+512,Omani Rial,2.6,364.1
+516,Namibian Dollar,0.055,7.73
+524,Nepalese Rupee,0.0071,1
+532,Netherlands Antillean Guilder,0.559,78.21
+533,Aruban Florin,0.559,78.21
+548,Vanuatu Vatu,0.0083,1.17
+554,New Zealand Dollar,0.585,81.87
+558,Nicaraguan Córdoba,0.027,3.81
+566,Nigerian Naira,0.00063,0.089
+578,Norwegian Krone,0.091,12.73
+586,Pakistani Rupee,0.0036,0.5
+590,Panamanian Balboa,1,140
+598,Papua New Guinean Kina,0.253,35.44
+600,Paraguayan Guaraní,0.00013,0.018
+604,Peruvian Sol,0.266,37.23
+608,Philippine Peso,0.017,2.41
+634,Qatari Riyal,0.275,38.46
+643,Russian Ruble,0.01,1.46
+646,Rwandan Franc,0.00072,0.1
+654,Saint Helena Pound,1.27,177.22
+682,Saudi Riyal,0.267,37.33
+690,Seychellois Rupee,0.074,10.29
+694,Sierra Leonean Leone,4.40E-05,0.0062
+702,Singapore Dollar,0.741,103.74
+704,Vietnamese Đồng,3.90E-05,0.0055
+706,Somali Shilling,0.0018,0.25
+710,South African Rand,0.055,7.73
+728,South Sudanese Pound,0.00077,0.11
+748,Swazi Lilangeni,0.055,7.73
+752,Swedish Krona,0.092,12.84
+756,Swiss Franc,1.11,155.56
+760,Syrian Pound,7.70E-05,0.011
+764,Thai Baht,0.028,3.94
+776,Tongan Paʻanga,0.42,58.82
+780,Trinidad and Tobago Dollar,0.147,20.65
+784,UAE Dirham,0.272,38.15
+788,Tunisian Dinar,0.317,44.44
+800,Ugandan Shilling,0.00027,0.038
+807,Macedonian Denar,0.018,2.46
+818,Egyptian Pound,0.02,2.83
+826,British Pound Sterling,1.27,177.22
+834,Tanzanian Shilling,0.0004,0.056
+840,US Dollar,1,140
+858,Uruguayan Peso,0.024,3.29
+860,Uzbekistan Som,7.90E-05,0.011
+882,Samoan Tala,0.364,50.91
+886,Yemeni Rial,0.004,0.56
+901,New Taiwan Dollar,0.031,4.38
+929,Mauritanian Ouguiya,0.025,3.54
+930,São Tomé and Príncipe Dobra,4.30E-05,0.0061
+931,Cuban Convertible Peso,0.042,5.83
+932,Zimbabwean Dollar,0.0031,0.43
+933,Belarusian Ruble,0.305,42.68
+934,Turkmenistani Manat,0.286,40
+936,Ghanaian Cedi,0.065,9.03
+937,Venezuelan Bolívar,0.027,3.84
+938,Sudanese Pound,0.0017,0.23
+940,Uruguayan Peso Unidad Indexada,0.192,26.92
+941,Serbian Dinar,0.0092,1.28
+943,Mozambican Metical,0.016,2.19
+944,Azerbaijan Manat,0.588,82.35
+946,Romanian Leu,0.213,29.79
+947,WIR Euro,1,140
+948,WIR Franc,1.11,155.56
+949,Turkish Lira,0.029,4.12
+950,Central African CFA Franc,0.0016,0.23
+951,East Caribbean Dollar,0.37,51.85
+952,West African CFA Franc,0.0016,0.23
+953,CFP Franc,0.0091,1.27
+960,Special Drawing Rights (IMF),1.33,186.67
+965,ADB Unit of Account,1,140
+967,Zambian Kwacha,0.037,5.19
+968,Surinamese Dollar,0.028,3.94
+969,Malagasy Ariary,0.00022,0.03
+970,Unidad de Valor Real (Colombia),4166.67,583333.33
+971,Afghan Afghani,0.014,2
+972,Tajikistani Somoni,0.092,12.84
+973,Angolan Kwanza,0.0011,0.15
+975,Bulgarian Lev,0.552,77.35
+976,Congolese Franc,0.00035,0.049
+977,Bosnia and Herzegovina Convertible Mark,0.552,77.35
+978,Euro,1.05,147.37
+980,Ukrainian Hryvnia,0.024,3.37
+981,Georgian Lari,0.37,51.85
+984,Bolivian Mvdol,6.67,933.33
+985,Polish Złoty,0.247,34.57
+986,Brazilian Real,0.167,23.33
+990,Unidad de Fomento (Chile),37.04,5185.19
+994,Sucre,1,140
+997,US Dollar (Next day),1,140

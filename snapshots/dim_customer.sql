@@ -28,3 +28,6 @@ SELECT
 FROM src
 
 {% endsnapshot %}
+
+
+end_of_day_acct_bal_table
